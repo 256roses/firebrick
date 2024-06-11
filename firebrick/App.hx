@@ -1,8 +1,9 @@
 package firebrick;
 
-import native.Emscripten;
+import firebrick.two.Editor;
+import emscripten.Emscripten;
+import Raylib;
 import haxe.Log;
-import native.Raylib;
 import cpp.Callable;
 
 class App {
@@ -23,6 +24,7 @@ class App {
     static var timeCounter:Float;
     static var timeStep:Float;
 
+    public static var editor:Editor;
     public static var logs:Array<String> = [];
 
     public function new(cfg:{title:String, display:{w:Int, h:Int}, desktop:{w:Int, h:Int}, web:{w:Int, h:Int}}) {
@@ -47,6 +49,7 @@ class App {
         // setup logging
         Log.trace = function(v, ?infos) {
             var msg = '[${DateTools.format(Date.now(), "%H:%M:%S")} ${infos.fileName} ${infos.lineNumber}] $v';
+            Sys.println(msg);
             logs.push(msg);
         }
     }
@@ -60,7 +63,12 @@ class App {
         Raylib.setTargetFPS(framerate);
         Raylib.setExitKey(Keys.NULL);
 
-        // load assets here
+        Assets.load('content/library.json'); // hardcoded!!!
+
+        #if firebrick_editor
+        editor = new Editor();
+        editor.startup();
+        #end
 
         displayTarget = Raylib.loadRenderTexture(displayWidth, displayHeight);
         srcRectangle = Rectangle.create(0, 0, displayWidth, -displayHeight);
@@ -79,7 +87,12 @@ class App {
 
         Raylib.unloadRenderTexture(displayTarget);
 
+        #if firebrick_editor
+        if(Editor.active) editor.shutdown();
+        #end
+
         // unload all assets
+        Assets.unload();
 
         Module.currentModule.shutdown();
         Raylib.closeWindow();
@@ -91,21 +104,36 @@ class App {
 
     static function update() {
         Module.currentModule.update();
+        #if firebrick_editor
+        if(Editor.active) {
+            editor.update();
+            if(Raylib.getScreenWidth() != 1600) Raylib.setWindowSize(1600, 900);
+        } else {
+            if(Raylib.getScreenWidth() != windowWidth) Raylib.setWindowSize(windowWidth, windowHeight);
+        }
+        #end
 
         timeCounter += Raylib.getFrameTime();
         while(timeCounter > timeStep) {
             Module.currentModule.fixedUpdate();
+            #if firebrick_editor
+            if(Editor.active) editor.fixedUpdate();
+            #end
             timeCounter -= timeStep;
         }
 
         Raylib.beginTextureMode(displayTarget);
-        Raylib.clearBackground(Colors.BLACK);
+        Raylib.clearBackground(Colors.DARKGRAY);
         Module.currentModule.render();
         Raylib.endTextureMode();
 
         Raylib.beginDrawing();
         Raylib.clearBackground(Colors.RED);
         Raylib.drawTexturePro(displayTarget.texture, srcRectangle, dstRectangle, Vector2.zero(), 0, Colors.WHITE);
+        #if firebrick_editor
+        if(Editor.active) editor.render();
+        else @:privateAccess editor.topBar();
+        #end
         Raylib.endDrawing();
     }
 
