@@ -12,6 +12,7 @@ class Module {
     public function fixedUpdate() {}
 
     public function render() {}
+    public function renderUI() {}
 
     public static function changeModule(m:Module) {
         currentModule.shutdown();

@@ -26,7 +26,7 @@ class Room {
     public function renderBackground() {
         for(cx in 0...Std.int(width/parent.gridsize)) {
             for(cy in 0...Std.int(height/parent.gridsize)) {
-                if(background[cx + width * cy] != 0) Raylib.drawTextureRec(Assets.images[tileset].spritesheet, parent.tilesetMap[tileset][background[cx + width * cy]], Raylib.Vector2.create(x + (cx * parent.gridsize), y + (cy * parent.gridsize)), Raylib.Colors.WHITE);
+                if(background[cx + width * cy] != 0) Raylib.drawTextureRec(Assets.images[tileset].spritesheet, parent.tilesetMap[tileset][background[cx + width * cy]], Raylib.Vector2.create(Std.int(x + (cx * parent.gridsize)),Std.int( y + (cy * parent.gridsize))), Raylib.Colors.WHITE);
             }
         }
     }
@@ -34,7 +34,7 @@ class Room {
     public function renderForeground() {
         for(cx in 0...Std.int(width/parent.gridsize)) {
             for(cy in 0...Std.int(height/parent.gridsize)) {
-                if(foreground[cx + width * cy] != 0) Raylib.drawTextureRec(Assets.images[tileset].spritesheet, parent.tilesetMap[tileset][foreground[cx + width * cy]], Raylib.Vector2.create(x + (cx * parent.gridsize), y + (cy * parent.gridsize)), Raylib.Colors.WHITE);
+                if(foreground[cx + width * cy] != 0) Raylib.drawTextureRec(Assets.images[tileset].spritesheet, parent.tilesetMap[tileset][foreground[cx + width * cy]], Raylib.Vector2.create(Std.int(x + (cx * parent.gridsize)),Std.int( y + (cy * parent.gridsize))), Raylib.Colors.WHITE);
             }
         }
     }
@@ -42,7 +42,7 @@ class Room {
     public function renderSolids() {
         for(cx in 0...Std.int(width/parent.gridsize)) {
             for(cy in 0...Std.int(height/parent.gridsize)) {
-                if(solids[cx + width * cy] != 0) Raylib.drawTextureRec(Assets.images[tileset].spritesheet, parent.tilesetMap[tileset][solids[cx + width * cy]], Raylib.Vector2.create(x + (cx * parent.gridsize), y + (cy * parent.gridsize)), Raylib.Colors.WHITE);
+                if(solids[cx + width * cy] != 0) Raylib.drawTextureRec(Assets.images[tileset].spritesheet, parent.tilesetMap[tileset][solids[cx + width * cy]], Raylib.Vector2.create(Std.int(x + (cx * parent.gridsize)),Std.int( y + (cy * parent.gridsize))), Raylib.Colors.WHITE);
             }
         }
     }

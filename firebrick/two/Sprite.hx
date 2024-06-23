@@ -60,11 +60,11 @@ class Sprite {
 
         var widthVisual = width * squashX;
         var widthDif = width - widthVisual;
-        var xOffset = x + (widthDif / 2);
+        var xOffset = Std.int(x + (widthDif / 2));
 
         var heightVisual = height * squashY;
         var heightDif = height - heightVisual;
-        var yOffset = y + (heightDif / 2);
+        var yOffset = Std.int(y + (heightDif / 2));
 
         var animX = 0;
         var animY = 0;

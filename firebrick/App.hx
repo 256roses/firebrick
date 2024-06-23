@@ -27,6 +27,8 @@ class App {
     public static var editor:Editor;
     public static var logs:Array<String> = [];
 
+    public static var bgColor:Color;
+
     public function new(cfg:{title:String, display:{w:Int, h:Int}, desktop:{w:Int, h:Int}, web:{w:Int, h:Int}}) {
         title = cfg.title;
 
@@ -52,10 +54,13 @@ class App {
             Sys.println(msg);
             logs.push(msg);
         }
+
+        bgColor = Raylib.Colors.DARKGRAY;
     }
 
     public function run(m:Module) {
         Raylib.setTraceLogLevel(7);
+        Raylib.setConfigFlags(ConfigFlags.VSYNC_HINT);
         Raylib.initWindow(windowWidth, windowHeight, title);
 
         displayRatio = windowWidth / displayWidth;
@@ -107,7 +112,11 @@ class App {
         #if firebrick_editor
         if(Editor.active) {
             editor.update();
-            if(Raylib.getScreenWidth() != 1600) Raylib.setWindowSize(1600, 900);
+            if(Raylib.getScreenWidth() != 1600) {
+                Raylib.setWindowSize(1600, 900);
+                Raylib.showCursor();
+                Raylib.enableCursor();
+            }
         } else {
             if(Raylib.getScreenWidth() != windowWidth) Raylib.setWindowSize(windowWidth, windowHeight);
         }
@@ -123,7 +132,7 @@ class App {
         }
 
         Raylib.beginTextureMode(displayTarget);
-        Raylib.clearBackground(Colors.DARKGRAY);
+        Raylib.clearBackground(bgColor);
         Module.currentModule.render();
         Raylib.endTextureMode();
 
@@ -134,6 +143,8 @@ class App {
         if(Editor.active) editor.render();
         else @:privateAccess editor.topBar();
         #end
+
+        Module.currentModule.renderUI();
         Raylib.endDrawing();
     }
 

@@ -322,6 +322,8 @@ class Editor extends Module {
                 text = 'Play';
             }
 
+            if(Raylib.isKeyPressed(Raylib.Keys.F2)) active = !active;
+
             if(Im.textButton(text)) {
                 active = !active;
                 if(!active) {
@@ -357,7 +359,7 @@ class Editor extends Module {
     function roomEditPanel() {
         // Layer select UI
         Im.begin(10, globalIncrement + 10, 1);
-        if(Im.button(5, 5, 'solids')) {
+        if(Im.button(5, 5, 'Solids')) {
             selectedLayer = 'solids';
         } else if(Im.button(5, 5, 'BG')) {
             selectedLayer = 'background';

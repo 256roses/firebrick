@@ -39,6 +39,7 @@ class Body {
     public function new(x:Float, y:Float, collisionData:CollisionData) {
         this.collisionData = collisionData;
         setPosition(x, y);
+        ALL_BODIES.push(this);
     }
 
     public function fixedUpdate() {

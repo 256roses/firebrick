@@ -2,7 +2,7 @@ package firebrick;
 
 import haxe.macro.Compiler;
 
-class MacroUtils {
+class MacroExt {
     public static macro function setAssetPath(folder:String) {
         #if wasm
         Compiler.define('ASSET_PATH', '${sys.FileSystem.absolutePath(folder)}@$folder');
