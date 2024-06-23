@@ -5,5 +5,6 @@
     "releasenote": "null",
     "contributors": ["foreignsasquatch"],
     "version": "0.0.0",
-    "description": "null"
+    "description": "null",
+    "dependencies": {"raylib-hx": "", "ase": ""}
 }
